@@ -9,14 +9,14 @@
   <title>NG - Deep Learning AI 学习笔记 | HaoRen Hao</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="本文记录NG的  AI 公开课 读书笔记。">
-<meta name="keywords" content="Deep Learning,读书笔记,AI">
+<meta name="keywords" content="Deep Learning,AI,读书笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NG - Deep Learning AI 学习笔记">
 <meta property="og:url" content="http://yoursite.com/2018/01/05/NG-DeepLearning-AI/index.html">
 <meta property="og:site_name" content="HaoRen Hao">
 <meta property="og:description" content="本文记录NG的  AI 公开课 读书笔记。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-03-30T04:09:23.000Z">
+<meta property="og:updated_time" content="2018-04-11T13:17:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NG - Deep Learning AI 学习笔记">
 <meta name="twitter:description" content="本文记录NG的  AI 公开课 读书笔记。">
@@ -164,23 +164,23 @@
 <li>dropout: 随机性，不可复现。</li>
 <li>Data Augmentation: “fake training data”，可能引入nosie。</li>
 <li>early stop: 非正交化。</li>
-<li>Batch normalization: mini-batch下计算mean/variance有一定噪声，算轻微正则。</li>
+<li>Batch normalization: mini-batch 下计算 mean/variance 有一定噪声，算轻微正则。</li>
 </ol>
 <h1 id="Bayes-error"><a href="#Bayes-error" class="headerlink" title="Bayes error"></a>Bayes error</h1><ol>
-<li>Bayes error: 理论最低误差，在人类擅长的领域（e.g. 图像识别），可以用human error来近似。 </li>
+<li>Bayes error: 理论最低误差，在人类擅长的领域（e.g. 图像识别），可以用 human error 来近似。 </li>
 <li>avoidable error = training error -  Bayes error。</li>
-<li>avoidable error较大时，专注降低bias。（e.g. bigger network）</li>
-<li>avoidable error较小时，专注降低variance。(e.g. Regularization)</li>
+<li>avoidable error 较大时，专注降低 bias。（e.g. bigger network）</li>
+<li>avoidable error 较小时，专注降低 variance。(e.g. Regularization)</li>
 </ol>
 <h1 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h1><ol>
 <li>Why convolution: 参数共享，稀疏连接。</li>
 <li>1x1 convolotion: Network in Network(FC in one slice), “shrink” in channle。</li>
 </ol>
 <h1 id="BN"><a href="#BN" class="headerlink" title="BN"></a>BN</h1><ol>
-<li>z = wx + b, BN会将z值normalize然后rescale，所以参数b没有意义，可以去除。</li>
-<li>BN降低当前层对前层的依赖（前层输出被normalize到相对稳定的分布）。</li>
-<li>在mini-batch下做BN，mean/variance是有噪声的，相当于加了正则。</li>
-<li>预测时两个方案确定mean／variance：a.记录训练时所有的mean／variance计算无偏估计量，需要保留额外数据。b. exponential weighted sum方式更新（类似momentum）。</li>
+<li>z = wx + b, BN 会将 z 值 normalize 然后 rescale，所以参数b没有意义，可以去除。</li>
+<li>BN 降低当前层对前层的依赖（前层输出被 normalize 到相对稳定的分布）。</li>
+<li>在 mini-batch 下做 BN，mean/variance 是有噪声的，相当于加了正则。</li>
+<li>预测时两个方案确定 mean/variance：a.记录训练时所有的 mean/variance 计算无偏估计量，需要保留额外数据。b. exponential weighted sum 方式更新（类似 momentum ）。</li>
 </ol>
 
       
@@ -225,11 +225,11 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">AI</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">AI</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
         		</li>
       		
 		</ul>
@@ -310,7 +310,7 @@
   
   
     <a href="/2017/08/15/wide and deep learning based on TensorFlow/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">基于TensorFlow的Wide&amp;Deep Learning //TODO</div>
+      <div class="article-nav-title">基于TensorFlow的Wide&amp;Deep Learning</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -448,18 +448,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Deep Learning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Explore-Exploit</a>
               </li>
              
@@ -476,7 +464,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Deep Learning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">AI</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Machine Learning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -533,10 +537,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Deep learning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">AI</a>
               </li>
             
             <div class="clearfix"></div>

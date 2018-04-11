@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="HaoRen Hao">
 <meta property="og:description" content="在做Rank系统时，我们常用ROC曲线的AUC来做离线评估。AUC评估的是序,LOSS类指标（RMSE,log-loss等）评估的是值。AUC更适合做Rank离线评估的原因有以下几点：   将预测值都乘以二，线上排序不会改变。离线评估时，LOSS类指标会有变化，AUC不会变。 使用Pairwise训练产生的模型，预测时输出的是rank-score，并不一定是CTR的点回归，LOSS类指标会比较差，">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-03-30T03:52:39.000Z">
+<meta property="og:updated_time" content="2018-04-10T03:45:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="离线AUC和线上CTR">
 <meta name="twitter:description" content="在做Rank系统时，我们常用ROC曲线的AUC来做离线评估。AUC评估的是序,LOSS类指标（RMSE,log-loss等）评估的是值。AUC更适合做Rank离线评估的原因有以下几点：   将预测值都乘以二，线上排序不会改变。离线评估时，LOSS类指标会有变化，AUC不会变。 使用Pairwise训练产生的模型，预测时输出的是rank-score，并不一定是CTR的点回归，LOSS类指标会比较差，">
@@ -207,45 +207,19 @@
 </table>
 <blockquote>
 <p>离线评估： 实验组AUC下降。</p>
-</blockquote>
-<blockquote>
 <p>结论： 继续线下迭代。</p>
-</blockquote>
-<blockquote>
 <p>等等。。。 u1真的最喜欢i1（基线），不喜欢i3(实验)? 也许是因为他没看i3呢？</p>
-</blockquote>
-<blockquote>
 <p>离线评估数据中，是存在<em>position-bias</em>的。这里对position-bias稍微展开一下:</p>
-</blockquote>
-<blockquote>
 <blockquote>
 <p>position-bias in show: 场景为用户在手机上浏览新闻，假设系统给用户加载了10条数据，手机一屏显示6条，如果用户没有进行翻页，那就只有top6的新闻真实曝光了，剩下的4条是伪曝光。对于伪曝光的数据，用户没点并不能说明他不感兴趣。<em>(用户真实的浏览行为更复杂，也许只看了前两条。需要做专门的click model，这个坑后续再填，这里只讲最简单的情况。)</em></p>
-</blockquote>
-</blockquote>
-<blockquote>
-<blockquote>
 <p>position-bias in click: 如果第一条和第三条内容差不多，同时都是用户感兴趣的新闻，一般用户都是从上往下浏览，那大多数情况就是用户点了第一条，没点第三条。同样的用户没点，不能说明他不感兴趣。</p>
 </blockquote>
-</blockquote>
-<blockquote>
 <p>在实际项目中，在实验上线前，历史log中的Label（click）是按照基线组打分排序产生的，离线算AUC的话，是偏向基线的。</p>
-</blockquote>
-<blockquote>
 <p>回到我们的例子中，假设用户u1对item的真实偏好程度为 <em>i3&gt;i1&gt;i2</em> 。</p>
-</blockquote>
-<blockquote>
 <p>基线策略认为 <em>i1&gt;i2&gt;i3</em> ，所以给用户下发了 <em>i1,i2,i3</em>。 假设用户手机屏幕很小，只看见了i1和i2，他点击了i1。</p>
-</blockquote>
-<blockquote>
 <p>但是，如果按照实验组打分给他下发 <em>i3，i1，i2</em> ,他就会看到i3和i1，有可能会产生两次点击。</p>
-</blockquote>
-<blockquote>
 <p>这是我们站在上帝的角度来看问题，现实生活中，我们并不知道用户的真实偏好，只能从日志里去看，用户点击了i1没有点击i3，自然会觉得用户更喜欢i1，会产生一种基线就是最吼的错觉。</p>
-</blockquote>
-<blockquote>
 <p>结论： <strong>排序质量更优，AUC不一定上涨。</strong></p>
-</blockquote>
-<blockquote>
 <p>解决方法： 同时使用Rank1-AUC(可能存在数据覆盖度不够的问题)。</p>
 </blockquote>
 <h3 id="case-2"><a href="#case-2" class="headerlink" title="case 2"></a>case 2</h3><table>
@@ -312,20 +286,10 @@
 </table>
 <blockquote>
 <p>优化点：实验组学出来u2基本不怎么点击，所以将他所有的打分都乘以0.1。</p>
-</blockquote>
-<blockquote>
 <p>离线评估： 实验组AUC上涨。</p>
-</blockquote>
-<blockquote>
 <p>线上CTR： 线上排序没有变化，CTR肯定也基本持平。</p>
-</blockquote>
-<blockquote>
 <p>原因分析： 单纯的环境特征(session, user, etc.)引入，能区分流量间的点击率高低，但是对单次请求没有区分性，无法提高线上排序质量。(这里只考虑最简单的情况，如果从去bias和特征组合的角度考虑，环境特征还是很重要的)</p>
-</blockquote>
-<blockquote>
 <p>结论： <strong>AUC上涨，线上CTR不一定有提升</strong>。</p>
-</blockquote>
-<blockquote>
 <p>解决方法： 同时使用Group-AUC (Group怎么划分是个问题)</p>
 </blockquote>
 <h3 id="case-3"><a href="#case-3" class="headerlink" title="case 3"></a>case 3</h3><table>
@@ -392,39 +356,17 @@
 </table>
 <blockquote>
 <p>离线评估只能在历史展现过的数据上进行，对于未展现的数据不知道，存在survive bias。</p>
-</blockquote>
-<blockquote>
 <p>在上述的例子中，我们先站在上帝的视角假设，用户u1对item的真实偏好程度为 <em>i2&gt;i1&gt;i3&gt;i4&gt;i5&gt;i6</em></p>
-</blockquote>
-<blockquote>
 <p>历史数据中，只有i1,i2,i3被展示给用户了，我们拿过来做离线评估，会发现实验组的AUC有提升，很开心，终于有效果了，可以上线实验一把了。。。</p>
-</blockquote>
-<blockquote>
 <p>但是上线后，发现效果反而下降了。原因是因为实验组把更差的i4,i5,i6展现给用户了 :(</p>
-</blockquote>
-<blockquote>
 <p>结论： <strong>离线评估集，不能代表全部数据</strong></p>
-</blockquote>
-<blockquote>
 <p>解决方法： 统计上线后，实验组和基线组展现数据的diff，如果diff越大，说明survive bias越大。</p>
 </blockquote>
 <h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><blockquote>
 <p>在排序系统里，AUC是一个比较置信的离线评估指标(我个人最喜欢)。但也不能迷信。。。</p>
-</blockquote>
-<blockquote>
-<h3 id="idea很棒，离线AUC没有提升"><a href="#idea很棒，离线AUC没有提升" class="headerlink" title="idea很棒，离线AUC没有提升"></a>idea很棒，离线AUC没有提升</h3></blockquote>
-<blockquote>
-<p>不要放弃。一般不会被允许进行线上实验的，但是不要轻易放弃。需要仔细分析，找出问题，不要被离线评估坑了(case1)。</p>
-</blockquote>
-<blockquote>
-<h3 id="离线AUC上涨，线上CTR没有提升"><a href="#离线AUC上涨，线上CTR没有提升" class="headerlink" title="离线AUC上涨，线上CTR没有提升"></a>离线AUC上涨，线上CTR没有提升</h3></blockquote>
-<blockquote>
-<p>0.review一下代码有没有bug</p>
-</blockquote>
-<blockquote>
+<h3 id="idea很棒，离线AUC没有提升"><a href="#idea很棒，离线AUC没有提升" class="headerlink" title="idea很棒，离线AUC没有提升"></a>idea很棒，离线AUC没有提升</h3><p>不要放弃。一般不会被允许进行线上实验的，但是不要轻易放弃。需要仔细分析，找出问题，不要被离线评估坑了(case1)。</p>
+<h3 id="离线AUC上涨，线上CTR没有提升"><a href="#离线AUC上涨，线上CTR没有提升" class="headerlink" title="离线AUC上涨，线上CTR没有提升"></a>离线AUC上涨，线上CTR没有提升</h3><p>0.review一下代码有没有bug</p>
 <p>1.分析一下AUC提升的来源，看看是否对排序有帮助(case 2)</p>
-</blockquote>
-<blockquote>
 <p>2.survive bias来背锅(case 3) </p>
 </blockquote>
 
@@ -700,18 +642,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Deep Learning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Explore-Exploit</a>
               </li>
              
@@ -728,7 +658,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Deep Learning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">AI</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Machine Learning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -785,10 +731,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Deep learning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">AI</a>
               </li>
             
             <div class="clearfix"></div>
