@@ -6,15 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: 机器学习 | HaoRen Hao</title>
+  <title>无处不在的 Survivorship bias | HaoRen Hao</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="HaoRen Hao">
-<meta property="og:url" content="http://yoursite.com/tags/机器学习/index.html">
+  <meta name="description" content="Survivorship bias 是机器学习里常见但又容易被忽略的坑。 在学术研究时，我们都假设训练集和测试集是独立同分布的。在工业应用时，我们会拿离线日志数据做调研，在模型定版后，将离线数据做训练集去训练一个模型，然后部署上线，线上的请求就是我们的测试集。 但线上请求的分布跟我们离线日志数据往往是不满足独立同分布的，这就会引起 Survivorship bias，常见的影响和场景如下。">
+<meta name="keywords" content="Survivorship bias,幸存者偏差,模型评估,反欺诈">
+<meta property="og:type" content="article">
+<meta property="og:title" content="无处不在的 Survivorship bias">
+<meta property="og:url" content="http://yoursite.com/2018/07/25/Survivorship bias everywhere/index.html">
 <meta property="og:site_name" content="HaoRen Hao">
+<meta property="og:description" content="Survivorship bias 是机器学习里常见但又容易被忽略的坑。 在学术研究时，我们都假设训练集和测试集是独立同分布的。在工业应用时，我们会拿离线日志数据做调研，在模型定版后，将离线数据做训练集去训练一个模型，然后部署上线，线上的请求就是我们的测试集。 但线上请求的分布跟我们离线日志数据往往是不满足独立同分布的，这就会引起 Survivorship bias，常见的影响和场景如下。">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/Survivorship%20bias%20everywhere/2.png">
+<meta property="og:updated_time" content="2018-07-27T07:46:13.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HaoRen Hao">
+<meta name="twitter:title" content="无处不在的 Survivorship bias">
+<meta name="twitter:description" content="Survivorship bias 是机器学习里常见但又容易被忽略的坑。 在学术研究时，我们都假设训练集和测试集是独立同分布的。在工业应用时，我们会拿离线日志数据做调研，在模型定版后，将离线数据做训练集去训练一个模型，然后部署上线，线上的请求就是我们的测试集。 但线上请求的分布跟我们离线日志数据往往是不满足独立同分布的，这就会引起 Survivorship bias，常见的影响和场景如下。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/Survivorship%20bias%20everywhere/2.png">
   
     <link rel="alternative" href="/atom.xml" title="HaoRen Hao" type="application/atom+xml">
   
@@ -132,36 +139,81 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Survivorship bias everywhere" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/10/29/offline-AUC-vs-online-ctr/" class="archive-article-date">
-  	<time datetime="2016-10-28T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-10-29</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/10/29/offline-AUC-vs-online-ctr/">离线AUC和线上CTR</a>
+    <h1 class="article-title" itemprop="name">
+      无处不在的 Survivorship bias
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/07/25/Survivorship bias everywhere/" class="archive-article-date">
+  	<time datetime="2018-07-24T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Survivorship bias 是机器学习里常见但又容易被忽略的坑。</p>
+<p>在学术研究时，我们都假设训练集和测试集是独立同分布的。在工业应用时，我们会拿离线日志数据做调研，在模型定版后，将离线数据做训练集去训练一个模型，然后部署上线，线上的请求就是我们的测试集。</p>
+<p>但线上请求的分布跟我们离线日志数据往往是不满足独立同分布的，这就会引起 Survivorship bias，常见的影响和场景如下。</p>
+<a id="more"></a>
+<h2 id="离线评估不准"><a href="#离线评估不准" class="headerlink" title="离线评估不准"></a>离线评估不准</h2><p>由于离线测试集和在线测试集分布不一致，造成离线效果和线上效果无法对齐，详见 <a href="https://haorenhao.github.io/2016/10/29/offline-AUC-vs-online-ctr/" target="_blank" rel="noopener">「离线AUC和线上CTR」</a>。</p>
+<h2 id="马太效应"><a href="#马太效应" class="headerlink" title="马太效应"></a>马太效应</h2><p>常见的一个场景为，用户点击了一个物料后，推荐系统就给他一直推荐，产生严重的马太效应。</p>
+<p>当年做推荐系统时，被很多朋友吐槽过，但是在离线数据里，用户就是点这类东西多，模型也就学出你喜欢这些。</p>
+<p>这个问题靠单个 model 优化很难解，需要配合 policy 一起来做，E&amp;E 就是一个不错的选择，详见 <a href="https://haorenhao.github.io/2016/11/12/EE-vs-LR/" target="_blank" rel="noopener">「Explore-Exploit怎么做」</a>。</p>
+<h2 id="猫鼠游戏"><a href="#猫鼠游戏" class="headerlink" title="猫鼠游戏"></a>猫鼠游戏</h2><p>在反欺诈里，一部分场景为事中拦截，即模型识别出来为欺诈行为后直接中止后续流程。</p>
+<p>这种场景，需要特别小心，Survivorship bias 很隐秘，但是影响挺大的，debug 周期较长。我们拿申请反欺诈场景为例展开看一下，下面是一个简化版的流程图。</p>
+<p><img src="https://raw.githubusercontent.com/haorenhao/_posts/master/Survivorship%20bias%20everywhere/2.png" width="350" alt="申请反欺诈流程图" align="center"></p>
+<p>在离线数据中，我们有 A、B、C 三类申请数据（由于 C 类用户没有真实放贷，所以无法区分 C1 和 C2），由于 C 类数据是没有标注的，所以拿 A、B 来构建样本，假设学出来的模型非常牛逼，可以把 A 都拦下来同时把 B 都放过，但是上线后会发生什么呢？</p>
+<p>A 类欺诈确实都被拦截了，但由于离线训练数据里没有没有 C1 类的样本数据，所以模型更新后，又出现了 C1 类欺诈。更近一步看，因为被拦截，所以后面产生的数据里不会有 A 类欺诈了，再次更新模型后，又无法拦截 A 了。欺诈模式就这样在 A 和 C1 中来回切换，每次模型离线效果都非常牛逼，但业务的欺诈率并不一定减少。</p>
+<p>怎么才能逃离这种困境呢，我想到的解法以下几个，但都有缺点，大家有其它想法可以反馈给我，谢谢～</p>
+<blockquote>
+<ol>
+<li>模型迭代做串行。可以严格降低欺诈率，但误拦率也是递增的，同时工程开销也会逐步变大。</li>
+<li>将 C 全部做为欺诈样本。可以严格降低欺诈率，但误拦率也是递增的。</li>
+<li>随机放过一些 C 流量。产生 C1 和 C2 数据，然后训练时加权这部分数据。这会人为的增加欺诈率（起码短期内是增加的），在一些敏感的领域是很难接受的。</li>
+</ol>
+</blockquote>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>感谢<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="https://raw.githubusercontent.com/haorenhao/_posts/master/imgs/Reward_Wechat.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -171,41 +223,120 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">AUC</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">幸存者偏差</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">离线评估</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">模型评估</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">CTR</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">position bias</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">反欺诈</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/07/25/Survivorship bias everywhere/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2018/05/02/MachineLearningYearning/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Machine Learning Yearning 读书笔记</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -228,9 +359,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
