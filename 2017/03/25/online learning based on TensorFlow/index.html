@@ -6,15 +6,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>基于TensorFlow的Online learning | HaoRen Hao</title>
+  <title>基于 TensorFlow 的 Online Learning | HaoRen Hao</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近几个月在项目中引入了基于 TensorFlow 的 online learning，本文介绍下基本原理和实战中踩过的坑。">
+  <meta name="description" content="最近几个月在项目中引入了基于 TensorFlow 的 Online Learning，本文介绍下基本原理和实战中踩过的坑。">
 <meta name="keywords" content="TensorFlow,Online learning,FTRL,gradient descent,adgrad">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基于TensorFlow的Online learning">
+<meta property="og:title" content="基于 TensorFlow 的 Online Learning">
 <meta property="og:url" content="http://yoursite.com/2017/03/25/online learning based on TensorFlow/index.html">
 <meta property="og:site_name" content="HaoRen Hao">
-<meta property="og:description" content="最近几个月在项目中引入了基于 TensorFlow 的 online learning，本文介绍下基本原理和实战中踩过的坑。">
+<meta property="og:description" content="最近几个月在项目中引入了基于 TensorFlow 的 Online Learning，本文介绍下基本原理和实战中踩过的坑。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/gradients%20computation.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/Partial%20Execution.png">
@@ -24,10 +24,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/error.PNG">
 <meta property="og:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/lr.PNG">
 <meta property="og:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/lrp.PNG">
-<meta property="og:updated_time" content="2018-07-30T08:28:05.000Z">
+<meta property="og:updated_time" content="2018-07-30T08:31:02.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="基于TensorFlow的Online learning">
-<meta name="twitter:description" content="最近几个月在项目中引入了基于 TensorFlow 的 online learning，本文介绍下基本原理和实战中踩过的坑。">
+<meta name="twitter:title" content="基于 TensorFlow 的 Online Learning">
+<meta name="twitter:description" content="最近几个月在项目中引入了基于 TensorFlow 的 Online Learning，本文介绍下基本原理和实战中踩过的坑。">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/gradients%20computation.png">
   
     <link rel="alternative" href="/atom.xml" title="HaoRen Hao" type="application/atom+xml">
@@ -153,7 +153,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      基于TensorFlow的Online learning
+      基于 TensorFlow 的 Online Learning
     </h1>
   
 
@@ -166,7 +166,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>最近几个月在项目中引入了基于 TensorFlow 的 online learning，本文介绍下基本原理和实战中踩过的坑。</p>
+        <p>最近几个月在项目中引入了基于 TensorFlow 的 Online Learning，本文介绍下基本原理和实战中踩过的坑。</p>
 <a id="more"></a>
 <h1 id="1-TensorFlow"><a href="#1-TensorFlow" class="headerlink" title="1. TensorFlow"></a>1. TensorFlow</h1><p>主要看<a href="https://www.tensorflow.org/" target="_blank" rel="noopener">官方文档和API</a>就行，这里只简单记录下有意思的特性。</p>
 <h2 id="Gradients-computation"><a href="#Gradients-computation" class="headerlink" title="Gradients computation"></a>Gradients computation</h2><p>和大部分的 DL 库一样，采用链式求导，自带的 OP 中都已经包含了 gradient 的求解，我们在使用时，只需要搭建 forward 的求 loss 的图就行，然后选择优化器去训练就行。<br><img src="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/gradients%20computation.png" width="300" align="center"></p>
@@ -328,7 +328,7 @@
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          基于TensorFlow的Wide&amp;Deep Learning
+          基于 TensorFlow 的 Wide&amp;Deep Learning
         
       </div>
     </a>
@@ -497,6 +497,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Deep Learning</a>
               </li>
              
@@ -505,31 +509,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
+                <a href="javascript:void(0)" class="js-tag color3">Survivorship bias</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">幸存者偏差</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">模型评估</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">反欺诈</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">区块链</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Online learning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">FTRL</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">gradient descent</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">adgrad</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -553,7 +549,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Survivorship bias</a>
+                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Online learning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">FTRL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">gradient descent</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">adgrad</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -562,18 +574,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Deep learning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">幸存者偏差</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">模型评估</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">反欺诈</a>
               </li>
             
             <div class="clearfix"></div>
