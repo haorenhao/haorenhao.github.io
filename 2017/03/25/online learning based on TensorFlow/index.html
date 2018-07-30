@@ -8,13 +8,13 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>基于TensorFlow的Online learning | HaoRen Hao</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近几个月在项目中引入了基于TensorFlow的online learning，本文介绍下基本原理和实战中踩过的坑。">
+  <meta name="description" content="最近几个月在项目中引入了基于 TensorFlow 的 online learning，本文介绍下基本原理和实战中踩过的坑。">
 <meta name="keywords" content="TensorFlow,Online learning,FTRL,gradient descent,adgrad">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于TensorFlow的Online learning">
 <meta property="og:url" content="http://yoursite.com/2017/03/25/online learning based on TensorFlow/index.html">
 <meta property="og:site_name" content="HaoRen Hao">
-<meta property="og:description" content="最近几个月在项目中引入了基于TensorFlow的online learning，本文介绍下基本原理和实战中踩过的坑。">
+<meta property="og:description" content="最近几个月在项目中引入了基于 TensorFlow 的 online learning，本文介绍下基本原理和实战中踩过的坑。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/gradients%20computation.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/Partial%20Execution.png">
@@ -24,10 +24,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/error.PNG">
 <meta property="og:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/lr.PNG">
 <meta property="og:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/lrp.PNG">
-<meta property="og:updated_time" content="2018-03-30T04:20:51.000Z">
+<meta property="og:updated_time" content="2018-07-30T08:28:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于TensorFlow的Online learning">
-<meta name="twitter:description" content="最近几个月在项目中引入了基于TensorFlow的online learning，本文介绍下基本原理和实战中踩过的坑。">
+<meta name="twitter:description" content="最近几个月在项目中引入了基于 TensorFlow 的 online learning，本文介绍下基本原理和实战中踩过的坑。">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/gradients%20computation.png">
   
     <link rel="alternative" href="/atom.xml" title="HaoRen Hao" type="application/atom+xml">
@@ -166,31 +166,31 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>最近几个月在项目中引入了基于TensorFlow的online learning，本文介绍下基本原理和实战中踩过的坑。</p>
+        <p>最近几个月在项目中引入了基于 TensorFlow 的 online learning，本文介绍下基本原理和实战中踩过的坑。</p>
 <a id="more"></a>
 <h1 id="1-TensorFlow"><a href="#1-TensorFlow" class="headerlink" title="1. TensorFlow"></a>1. TensorFlow</h1><p>主要看<a href="https://www.tensorflow.org/" target="_blank" rel="noopener">官方文档和API</a>就行，这里只简单记录下有意思的特性。</p>
-<h2 id="Gradients-computation"><a href="#Gradients-computation" class="headerlink" title="Gradients computation"></a>Gradients computation</h2><p>和大部分的DL库一样，采用链式求导，自带的OP中都已经包含了gradient的求解，我们在使用时，只需要搭建forward的求LOSS/likelihood的图就行，然后选择优化器去训练就行。<br><img src="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/gradients%20computation.png" width="300" align="center"></p>
-<h2 id="Partial-Execution"><a href="#Partial-Execution" class="headerlink" title="Partial Execution"></a>Partial Execution</h2><p>根据client指定的fetch，自动查找依赖，进行部分计算。一方面避免了无效的计算，另一方面实现了图的”多态”(例如，图中e和f可以分别是模型的训练和评估。)<br><img src="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/Partial%20Execution.png" width="300" align="center"></p>
+<h2 id="Gradients-computation"><a href="#Gradients-computation" class="headerlink" title="Gradients computation"></a>Gradients computation</h2><p>和大部分的 DL 库一样，采用链式求导，自带的 OP 中都已经包含了 gradient 的求解，我们在使用时，只需要搭建 forward 的求 loss 的图就行，然后选择优化器去训练就行。<br><img src="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/gradients%20computation.png" width="300" align="center"></p>
+<h2 id="Partial-Execution"><a href="#Partial-Execution" class="headerlink" title="Partial Execution"></a>Partial Execution</h2><p>根据 client 指定的 fetch，自动查找依赖，进行部分计算。一方面避免了无效的计算，另一方面实现了图的”多态”(例如，图中e和f可以分别是模型的训练和评估。)<br><img src="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/Partial%20Execution.png" width="300" align="center"></p>
 <h2 id="Parallel-training"><a href="#Parallel-training" class="headerlink" title="Parallel training"></a>Parallel training</h2><p>和其它的分布式计算一样，参数同步有异步和同步的两种形式。<br><img src="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/parallel%20training.png" width="300" align="center"></p>
 <h2 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h2><p>Queue可以作为一个缓冲区，实现数据预处理和模型训练的并行。<br><img src="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/Queue.gif" width="300" align="center"></p>
 <hr>
 <h1 id="2-Online-learning"><a href="#2-Online-learning" class="headerlink" title="2. Online learning"></a>2. Online learning</h1><h2 id="overall-structure"><a href="#overall-structure" class="headerlink" title="overall structure"></a>overall structure</h2><p><img src="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/recomend%20system.png" width="450" align="center"><br>online learning是一个相对于offline learning的概念。</p>
 <ul>
-<li>在offline learning中，图中的extract为ETL定期收集日志并提取样本；training为模型的定期训练batch training或者increment training。</li>
-<li>在online learning中，图中的extract为实时样本流；training为模型的online training。据说凤巢已经做到了流式的训练样本，直接更新线上的model；我们的实现为流式的训练样本，定期export模型然后推到线上reload。</li>
+<li>在 offline learning 中，图中的 extract 为 ETL 定期收集日志并提取样本；training 为模型的定期训练 batch training 或者 increment training。</li>
+<li>在 online learning 中，图中的 extract 为实时样本流；training 为模型的 online training。据说凤巢已经做到了流式的训练样本，直接更新线上的 model；我们的实现为流式的训练样本，定期export模型然后推到线上 reload。</li>
 </ul>
 <h2 id="实时样本流"><a href="#实时样本流" class="headerlink" title="实时样本流"></a>实时样本流</h2><ul>
-<li>使用kafka实时收集服务器生成的pv log和客户端实时上报的click log.</li>
-<li>使用storm流式的提取特征.</li>
-<li>label的确认:用户的反馈行为上报是有延时的。我们的实现中采用延时确认方式，收集到pv log后先提取特征，然后等待15分钟(具体时长是label正确性和样本流时效性的tradeoff)，如果收集到对应的click log则生成正样本，否则生成负样本。在Twitter的一篇文章中，收集到pv log中马上产出一个负样本，收集到click log后拼接上pv log产出一个正样本，这样做引入了一些”错误的负样本”但提高了样本流的时效性。</li>
+<li>使用 kafka 实时收集服务器生成的 pv log 和客户端实时上报的 click log.</li>
+<li>使用 storm 流式的提取特征.</li>
+<li>label 确认:用户的反馈行为上报是有延时的。我们的实现中采用延时确认方式，收集到 pv log 后先提取特征，然后等待 15 分钟(具体时长是 label 正确性和样本流时效性的 tradeoff)，如果收集到对应的 click log 则生成正样本，否则生成负样本。在 twitter 的一篇文章中，收集到 pv log 中马上产出一个负样本，收集到 click log 后拼接上 pv log 产出一个正样本，这样做引入了一些”错误的负样本”但提高了样本流的时效性。</li>
 </ul>
 <h2 id="online-training-based-on-TF"><a href="#online-training-based-on-TF" class="headerlink" title="online training (based on TF)"></a>online training (based on TF)</h2><ul>
-<li>TF支持长期学习，定期产出checkpoint，而且支持checkpoint热启动。要实现online training，只需要将数据流式的灌进去就行。</li>
-<li>Queue：用一个FIFOQueue作为缓冲区，训练流程的触发的第一个OP为dequeue操作，如果queue为空，则hang住等待，如果queue有数据，则进行训练。</li>
-<li>kafka reader：另外启一个线程，通过kafka reader从kafka中读取数据，执行enqueue把数据塞进去。</li>
+<li>TF支持长期学习，定期产出 checkpoint，而且支持 checkpoint 热启动。要实现 online training，只需要将数据流式的灌进去就行。</li>
+<li>Queue：用一个 FIFOQueue 作为缓冲区，训练流程的触发的第一个 OP 为 dequeue 操作，如果 queue 为空，则 hang 住等待，如果 queue 有数据，则进行训练。</li>
+<li>kafka reader：另外启一个线程，通过 kafka reader 从 kafka 中读取数据，执行 enqueue 把数据塞进去。</li>
 </ul>
 <h2 id="收益分析"><a href="#收益分析" class="headerlink" title="收益分析"></a>收益分析</h2><ul>
-<li>提高时效性–&gt;降低variance。</li>
+<li>提高时效性–&gt;降低 variance。</li>
 <li>适用场景：数据分布变化大(e.g. 资讯推荐)<br><img src="https://raw.githubusercontent.com/haorenhao/_posts/master/online%20learning%20based%20on%20TensorFlow/error.PNG" width="500" align="center"></li>
 </ul>
 <h1 id="3-实战指南"><a href="#3-实战指南" class="headerlink" title="3. 实战指南"></a>3. 实战指南</h1><ul>
@@ -497,10 +497,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Deep Learning</a>
               </li>
              
@@ -509,43 +505,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Survivorship bias</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">幸存者偏差</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">模型评估</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">反欺诈</a>
+                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">区块链</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">AUC</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">离线评估</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CTR</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">position bias</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -569,11 +533,47 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">AUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">离线评估</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CTR</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">position bias</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Survivorship bias</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">W&D</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Deep learning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">幸存者偏差</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">模型评估</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">反欺诈</a>
               </li>
             
             <div class="clearfix"></div>

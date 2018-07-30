@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: 离线评估 | HaoRen Hao</title>
+  <title>Explore-Exploit怎么做 | HaoRen Hao</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="HaoRen Hao">
-<meta property="og:url" content="http://yoursite.com/tags/离线评估/index.html">
+  <meta name="description" content="在推荐系统中，使用传统的机器学习模型，基本思路都是在历史点展数据上训练得到模型的参数。每次推荐时，把pCTR最高的TOP-k给选出来。这是一种非常贪婪的做法，在新闻等系统中，每天资讯的更新非常快，很多资讯完全没有历史点展信息，这种情况下，大部分机器学习模型会给出一个先验值(e.g.均值)或者通过泛化特征给出一个值(注.相当于各维度均值加权)。如果按pCTR来选，TOP-k会被历史数据中点展比高的资">
+<meta name="keywords" content="Explore-Exploit,E&amp;E,MAB,Online-learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Explore-Exploit怎么做">
+<meta property="og:url" content="http://yoursite.com/2016/11/12/EE/index.html">
 <meta property="og:site_name" content="HaoRen Hao">
+<meta property="og:description" content="在推荐系统中，使用传统的机器学习模型，基本思路都是在历史点展数据上训练得到模型的参数。每次推荐时，把pCTR最高的TOP-k给选出来。这是一种非常贪婪的做法，在新闻等系统中，每天资讯的更新非常快，很多资讯完全没有历史点展信息，这种情况下，大部分机器学习模型会给出一个先验值(e.g.均值)或者通过泛化特征给出一个值(注.相当于各维度均值加权)。如果按pCTR来选，TOP-k会被历史数据中点展比高的资">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-03-30T03:52:39.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HaoRen Hao">
+<meta name="twitter:title" content="Explore-Exploit怎么做">
+<meta name="twitter:description" content="在推荐系统中，使用传统的机器学习模型，基本思路都是在历史点展数据上训练得到模型的参数。每次推荐时，把pCTR最高的TOP-k给选出来。这是一种非常贪婪的做法，在新闻等系统中，每天资讯的更新非常快，很多资讯完全没有历史点展信息，这种情况下，大部分机器学习模型会给出一个先验值(e.g.均值)或者通过泛化特征给出一个值(注.相当于各维度均值加权)。如果按pCTR来选，TOP-k会被历史数据中点展比高的资">
   
     <link rel="alternative" href="/atom.xml" title="HaoRen Hao" type="application/atom+xml">
   
@@ -132,80 +137,327 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-EE" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/10/29/offline-AUC-vs-online-ctr/" class="archive-article-date">
-  	<time datetime="2016-10-28T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-10-29</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/10/29/offline-AUC-vs-online-ctr/">离线AUC和线上CTR</a>
+    <h1 class="article-title" itemprop="name">
+      Explore-Exploit怎么做
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2016/11/12/EE/" class="archive-article-date">
+  	<time datetime="2016-11-11T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在推荐系统中，使用传统的机器学习模型，基本思路都是在历史点展数据上训练得到模型的参数。每次推荐时，把pCTR最高的TOP-k给选出来。这是一种非常贪婪的做法，在新闻等系统中，每天资讯的更新非常快，很多资讯完全没有历史点展信息，这种情况下，大部分机器学习模型会给出一个先验值(e.g.均值)或者通过泛化特征给出一个值(注.相当于各维度均值加权)。如果按pCTR来选，TOP-k会被历史数据中点展比高的资讯占据，新资讯将无法获得下发，形成典型的马太效应。</p>
+<p><a href="https://en.wikipedia.org/wiki/Multi-armed_bandit" target="_blank" rel="noopener">Explore-Exploit</a>(E&amp;E)通过主动展现的方式，让新物料都能得到一定的下发(explore)；同时，使用反馈学习，让低质的物料退场，高质的物继续下发(exploit)。从而缓解上述的马太效应。</p>
+<p>但在实际应用中，E&amp;E比想象的要困难很多。本文梳理了做E&amp;E实验需要注意的地方。</p>
+<a id="more"></a>
+<h3 id="E-amp-E收益来源"><a href="#E-amp-E收益来源" class="headerlink" title="E&amp;E收益来源"></a>E&amp;E收益来源</h3><p>首先，我们对E&amp;E的潜在收益点做一下分析，整体上来说，它的diff包括以下三点：</p>
+<blockquote>
+<ol>
+<li><strong>Exploit</strong>：后验模型。</li>
+<li><strong>Explore</strong>：主动展现机制。</li>
+<li><strong>Info</strong>：主动展现后获取的log数据。</li>
+</ol>
+</blockquote>
+<p>顺着它的diff，我们来寻找潜在的收益点。</p>
+<blockquote>
+<ol>
+<li><strong>ΔExploit</strong>：如果想Exploit产生收益，则需要后验的精确性比基线的模型好。如果是这种情况，我们单纯的替换后验模型即可，没必要做E&amp;E。但是基础的E&amp;E，使用点展词典做后验，精度一般是不够的。而使用Contextual E&amp;E，每个物料一个模型，工程难度大。所以Exploit很难直接取得收益，想办法降低损失是更现实的做法。</li>
+<li><strong>ΔExplore</strong>：如果想Explore产生收益，则需要Explore上来的物料比原位置的物料更好。如果是这种情况，直接做插入就行。这条路对Explore的精确度要求很高，或者基线非常弱才行得通。Explore直接产生收益非常难，更需要考虑的是怎么降低explore的成本。</li>
+<li><strong>ΔInfo</strong>：回到做E&amp;E的初衷，就是要打破系统的马太效应，让一些冷门物料/新物料获得一些展示机会，<strong>获得反馈信息</strong>，从而在这部分物料中挑选出优质资源。用传统的机器学习模型，这些Info是无法获取的。所以，E&amp;E的收益点就是<strong>牺牲短期利益，获取更多的Info，进而拿到长期收益</strong>。</li>
+</ol>
+</blockquote>
+<h3 id="E-amp-E实验怎么做"><a href="#E-amp-E实验怎么做" class="headerlink" title="E&amp;E实验怎么做"></a>E&amp;E实验怎么做</h3><p>想清楚E&amp;E的收益点之后，就可以考虑E&amp;E的工程实现了，归纳起来就是节流和数据隔离。</p>
+<blockquote>
+<ol>
+<li><strong>节流</strong>：降低Exploit和Explore过程中的成本。分开来看，Exploit的损失主要是后验精度不够，可以采用和基线后验bagging的方式来降低影响。Explore的成本主要是前期的探索，可以考虑启发式的探索，使用点击无关的模型(权威性，质量度等)作为潜力因子，提高探索的效率。</li>
+<li><strong>数据隔离</strong>：E&amp;E的收益主要来源于ΔInfo，那就必须要保证ΔInfo只能被实验组学习。不然就变成实验组用部分流量来做Explore，基线组纯Exploit。不做数据隔离，相当于ΔInfo=0，那整体来看，实验组基本就是负向了。 但是做数据隔离实验也是一件很难的事，下面拿我实践中的方案举例说明。(注：暂时没有找到完全置信的实验方式，待填坑）。</li>
+</ol>
+</blockquote>
+<p>数据隔离实验方案1：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">组别</th>
+<th style="text-align:center">模型</th>
+<th style="text-align:center">训练数据</th>
+<th style="text-align:center">流量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">A</td>
+<td style="text-align:center">baseline</td>
+<td style="text-align:center">A</td>
+<td style="text-align:center">50%</td>
+</tr>
+<tr>
+<td style="text-align:center">B1</td>
+<td style="text-align:center">baseline</td>
+<td style="text-align:center">B1+B2</td>
+<td style="text-align:center">10%</td>
+</tr>
+<tr>
+<td style="text-align:center">B2</td>
+<td style="text-align:center">E&amp;E</td>
+<td style="text-align:center">B1+B2</td>
+<td style="text-align:center">40%</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>实验结论： B1 &gt; B2 &gt; A</p>
+<p>分析：A相当于Exploit(baseline)，B1相当于Exploit(baseline)+ΔInfo，B2相当于Exploit(baseline)+ΔInfo+ΔExploit+ΔExplore。</p>
+<p>问题：实验期间，每组用的训练数据只有整数据量的50%。后验精度有损失。</p>
+</blockquote>
+<p>数据隔离实验方案2：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">组别</th>
+<th style="text-align:center">模型</th>
+<th style="text-align:center">训练数据</th>
+<th style="text-align:center">流量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">A</td>
+<td style="text-align:center">baseline</td>
+<td style="text-align:center">A + B1</td>
+<td style="text-align:center">80%</td>
+</tr>
+<tr>
+<td style="text-align:center">B1</td>
+<td style="text-align:center">baseline</td>
+<td style="text-align:center">A + B1</td>
+<td style="text-align:center">10%</td>
+</tr>
+<tr>
+<td style="text-align:center">B2</td>
+<td style="text-align:center">E&amp;E</td>
+<td style="text-align:center">A + B2</td>
+<td style="text-align:center">10%</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>实验结论： B2 &gt; A = B1</p>
+<p>分析：A和B1相当于Exploit(baseline)，B2相当于Exploit(baseline)+ΔInfo+ΔExploit+ΔExplore。</p>
+<p>问题：本质上A和B1为同一个基线组，B2训练用到了A，相当于用到了基线的Info。</p>
+</blockquote>
+<p>数据隔离实验方案3：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">组别</th>
+<th style="text-align:center">模型</th>
+<th style="text-align:center">训练数据</th>
+<th style="text-align:center">流量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">A</td>
+<td style="text-align:center">baseline</td>
+<td style="text-align:center">A + B2</td>
+<td style="text-align:center">80%</td>
+</tr>
+<tr>
+<td style="text-align:center">B1</td>
+<td style="text-align:center">baseline</td>
+<td style="text-align:center">A + B1</td>
+<td style="text-align:center">10%</td>
+</tr>
+<tr>
+<td style="text-align:center">B2</td>
+<td style="text-align:center">E&amp;E</td>
+<td style="text-align:center">A + B2</td>
+<td style="text-align:center">10%</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>实验结论： A &gt; B2 &gt; B1</p>
+<p>分析：A相当于Exploit(baseline)+ΔInfo，B1相当于Exploit(baseline),B2相当于Exploit(baseline)+ΔInfo+ΔExploit+ΔExplore。</p>
+<p>问题：B2挖出来的ΔInfo，会被A组使用，然后间接的传递给B1组。</p>
+</blockquote>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>感谢<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="https://raw.githubusercontent.com/haorenhao/_posts/master/imgs/Reward_Wechat.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">AUC</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Explore-Exploit</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">离线评估</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">E&E</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">CTR</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">MAB</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">position bias</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Survivorship bias</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Online-learning</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2016/11/12/EE/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/11/26/ClickModel/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Click Model
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2016/10/29/offline-AUC-vs-online-ctr/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">离线AUC和线上CTR</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -228,9 +480,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
