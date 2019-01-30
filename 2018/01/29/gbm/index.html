@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: CTR | HaoRen Hao</title>
+  <title>GBM | HaoRen Hao</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="HaoRen Hao">
-<meta property="og:url" content="http://yoursite.com/tags/CTR/index.html">
+  <meta name="description" content="ID3、C4.5、CART 根据 info entropy gain (ID3)、info entropy gain ratio (C4.5)、gini (CART) 计算最优分裂。 节点均值作为节点打分。  xgboost 节点打分不是简单平均，而是通过 Optimize the objective (Training Loss + Regularization) 计算。   每次学习新的树时，">
+<meta name="keywords" content="GBM,xgboost,lightGBM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GBM">
+<meta property="og:url" content="http://yoursite.com/2018/01/29/gbm/index.html">
 <meta property="og:site_name" content="HaoRen Hao">
+<meta property="og:description" content="ID3、C4.5、CART 根据 info entropy gain (ID3)、info entropy gain ratio (C4.5)、gini (CART) 计算最优分裂。 节点均值作为节点打分。  xgboost 节点打分不是简单平均，而是通过 Optimize the objective (Training Loss + Regularization) 计算。   每次学习新的树时，">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-01-30T09:48:04.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HaoRen Hao">
+<meta name="twitter:title" content="GBM">
+<meta name="twitter:description" content="ID3、C4.5、CART 根据 info entropy gain (ID3)、info entropy gain ratio (C4.5)、gini (CART) 计算最优分裂。 节点均值作为节点打分。  xgboost 节点打分不是简单平均，而是通过 Optimize the objective (Training Loss + Regularization) 计算。   每次学习新的树时，">
   
     <link rel="alternative" href="/atom.xml" title="HaoRen Hao" type="application/atom+xml">
   
@@ -136,80 +141,218 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-gbm" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/10/29/offline-AUC-vs-online-ctr/" class="archive-article-date">
-  	<time datetime="2016-10-28T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-10-29</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/10/29/offline-AUC-vs-online-ctr/">离线AUC和线上CTR</a>
+    <h1 class="article-title" itemprop="name">
+      GBM
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/01/29/gbm/" class="archive-article-date">
+  	<time datetime="2018-01-28T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="ID3、C4-5、CART"><a href="#ID3、C4-5、CART" class="headerlink" title="ID3、C4.5、CART"></a>ID3、C4.5、CART</h1><ul>
+<li>根据 info entropy gain (ID3)、info entropy gain ratio (C4.5)、gini (CART) 计算最优分裂。</li>
+<li>节点均值作为节点打分。</li>
+</ul>
+<h1 id="xgboost"><a href="#xgboost" class="headerlink" title="xgboost"></a>xgboost</h1><ul>
+<li>节点打分不是简单平均，而是通过 Optimize the objective (Training Loss + Regularization) 计算。</li>
+</ul>
+<blockquote>
+<p>每次学习新的树时，Training Loss = sum(loss(yi, yi(t-1) + ft(xi) + reg(ft)) + constant。其中argmin（Training loss）下的 ft 是要求的节点打分，可以理解为一个 1 * K（节点个数）的向量。</p>
+<p>已知树的结构，可通过将 loss(yi, yi(t-1) + ft(xi) 做二阶泰勒展开，reg(ft)通常包括叶子节点个数和节点打分，合并到一起后是个二次方程，很容易求 argmin 的 ft 的取值（需要计算每个样本的一阶和二阶导，每棵树只要计算一次）。</p>
+</blockquote>
+<ul>
+<li>逐层遍历所有可能的结构，找到最优分裂(pre-sort-based and linear-scan)。</li>
+<li>离散特征 one-hot。</li>
+<li>Pre-stopping vs Post-Prunning。</li>
+</ul>
+<h1 id="lightGBM"><a href="#lightGBM" class="headerlink" title="lightGBM"></a>lightGBM</h1><ul>
+<li>Gradient-based One-Side Sampling: 根据样本梯度大小采样（头部保留，尾部采样 + 加权）。</li>
+<li>Histogram bin: 直方图分桶（xgboost也支持直方图但没有 EFB）。</li>
+<li>EFB: 将互斥的特征（不同时取非空值）的特征集合作为一个slot，共用一个 Histogram。</li>
+<li>默认 Leaf-wise（xgboost 也支持 Leaf-wise，但默认是level-wise），限制树最大深度缓解过拟合问题。</li>
+<li>Optimal Split for Categorical Features: 离散特征不用 one-hot 变成多个 slot。如果直接遍历，有 2^(k-1) - 1 划分方式。但通过累积 sum_gradient / sum_hessian 对直方图排序，然后做划分，时间复杂度为 O(k * log(k))。</li>
+<li>Feature Parallel: 只需要存 Histogram，所以可以每个 worker 节点保存所有的数据，所以不需要多次通讯，每个 worker 负责找一部分特征的最优划分，最后再比较下，选最优就行。</li>
+<li>Data Parallel: 网络通讯优化，使用 “Reduce Scatter” 同步不同的部分；分裂后只需对一个子节点统计直方图，另一个子节点可通过直方图求差（父节点-兄弟节点）得到。</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li>ID3、C4.5、CART:《统计学习方法》</li>
+<li>xgboost: <a href="https://arxiv.org/pdf/1603.02754.pdf" target="_blank" rel="noopener">paper</a>、<a href="https://homes.cs.washington.edu/~tqchen/pdf/BoostedTree.pdf" target="_blank" rel="noopener">ppt</a>、<a href="https://xgboost.readthedocs.io/en/latest/" target="_blank" rel="noopener">docs</a></li>
+<li>lightgbm: <a href="https://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradient-boosting-decision-tree.pdf" target="_blank" rel="noopener">paper</a>、<a href="https://lightgbm.readthedocs.io/en/latest" target="_blank" rel="noopener">docs</a></li>
+</ul>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>打 call 不如打钱 :)<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="https://raw.githubusercontent.com/haorenhao/_posts/master/imgs/Reward_Wechat.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Survivorship bias</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">GBM</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">AUC</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">xgboost</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">离线评估</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">CTR</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">position bias</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">lightGBM</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/01/29/gbm/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/02/23/bitcoin-and-crypyocurrency-tech/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          区块链-技术驱动金融
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2018/01/05/NG-DeepLearning-AI/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">NG - Deep Learning AI 学习笔记</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -232,9 +375,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
