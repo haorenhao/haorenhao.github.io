@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>GBM | HaoRen Hao</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="ID3、C4.5、CART 根据 info entropy gain (ID3)、info entropy gain ratio (C4.5)、gini (CART) 计算最优分裂。 节点均值作为节点打分。  xgboost 节点打分不是简单平均，而是通过 Optimize the objective (Training Loss + Regularization) 计算。   每次学习新的树时，">
+  <meta name="description" content="本文主要记录下 xgboost 和 lightGBM 的学习笔记。">
 <meta name="keywords" content="GBM,xgboost,lightGBM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GBM">
 <meta property="og:url" content="http://yoursite.com/2018/01/29/gbm/index.html">
 <meta property="og:site_name" content="HaoRen Hao">
-<meta property="og:description" content="ID3、C4.5、CART 根据 info entropy gain (ID3)、info entropy gain ratio (C4.5)、gini (CART) 计算最优分裂。 节点均值作为节点打分。  xgboost 节点打分不是简单平均，而是通过 Optimize the objective (Training Loss + Regularization) 计算。   每次学习新的树时，">
+<meta property="og:description" content="本文主要记录下 xgboost 和 lightGBM 的学习笔记。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-30T09:48:04.000Z">
+<meta property="og:updated_time" content="2019-01-30T09:52:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GBM">
-<meta name="twitter:description" content="ID3、C4.5、CART 根据 info entropy gain (ID3)、info entropy gain ratio (C4.5)、gini (CART) 计算最优分裂。 节点均值作为节点打分。  xgboost 节点打分不是简单平均，而是通过 Optimize the objective (Training Loss + Regularization) 计算。   每次学习新的树时，">
+<meta name="twitter:description" content="本文主要记录下 xgboost 和 lightGBM 的学习笔记。">
   
     <link rel="alternative" href="/atom.xml" title="HaoRen Hao" type="application/atom+xml">
   
@@ -161,7 +161,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="ID3、C4-5、CART"><a href="#ID3、C4-5、CART" class="headerlink" title="ID3、C4.5、CART"></a>ID3、C4.5、CART</h1><ul>
+        <p>本文主要记录下 xgboost 和 lightGBM 的学习笔记。</p>
+<a id="more"></a>
+<h1 id="ID3、C4-5、CART"><a href="#ID3、C4-5、CART" class="headerlink" title="ID3、C4.5、CART"></a>ID3、C4.5、CART</h1><ul>
 <li>根据 info entropy gain (ID3)、info entropy gain ratio (C4.5)、gini (CART) 计算最优分裂。</li>
 <li>节点均值作为节点打分。</li>
 </ul>
@@ -437,22 +439,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Explore-Exploit</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">E&E</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">MAB</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Online-learning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Click Model</a>
               </li>
              
@@ -473,11 +459,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
+                <a href="javascript:void(0)" class="js-tag color1">Explore-Exploit</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
+                <a href="javascript:void(0)" class="js-tag color4">E&E</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">MAB</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Online-learning</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -485,27 +479,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">区块链</a>
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">GBM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">xgboost</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">lightGBM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Deep Learning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">AI</a>
+                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -522,6 +500,30 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">反欺诈</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Deep Learning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">AI</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">区块链</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">GBM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">xgboost</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">lightGBM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -549,14 +551,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">W&D</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Deep learning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Online learning</a>
               </li>
              
@@ -570,6 +564,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">adgrad</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">W&D</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Deep learning</a>
               </li>
             
             <div class="clearfix"></div>
