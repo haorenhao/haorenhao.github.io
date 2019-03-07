@@ -9,17 +9,19 @@
   <title>AutoML 及落地实践 | HaoRen Hao</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Automatic Machine Learning(AutoML) 是近几年一个很火的 topic。 最近我也在做 AI 2B 的工作，总结现状就是“做项目不难，赚钱难”。 ML 技术应用到传统行业，提升非常明显，这就是“做项目不难”。ML 的应用成本太高了，上线和建模成本都很高，这就是“赚钱难”。 上线的瓶颈主要在硬件和开发成本，现在的有很多人在做平台，来优化资源管理和避免重复开发。 建模主要">
-<meta name="keywords" content="AutoML,AI,2B,落地">
+<meta name="keywords" content="AI,AutoML,2B,落地,overfitting,anti-overfitting">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AutoML 及落地实践">
 <meta property="og:url" content="http://yoursite.com/2019/01/31/autoML/index.html">
 <meta property="og:site_name" content="HaoRen Hao">
 <meta property="og:description" content="Automatic Machine Learning(AutoML) 是近几年一个很火的 topic。 最近我也在做 AI 2B 的工作，总结现状就是“做项目不难，赚钱难”。 ML 技术应用到传统行业，提升非常明显，这就是“做项目不难”。ML 的应用成本太高了，上线和建模成本都很高，这就是“赚钱难”。 上线的瓶颈主要在硬件和开发成本，现在的有很多人在做平台，来优化资源管理和避免重复开发。 建模主要">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-02-22T10:01:59.000Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/EpistasisLab/tpot/master/images/tpot-ml-pipeline.png">
+<meta property="og:updated_time" content="2019-03-07T03:00:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AutoML 及落地实践">
 <meta name="twitter:description" content="Automatic Machine Learning(AutoML) 是近几年一个很火的 topic。 最近我也在做 AI 2B 的工作，总结现状就是“做项目不难，赚钱难”。 ML 技术应用到传统行业，提升非常明显，这就是“做项目不难”。ML 的应用成本太高了，上线和建模成本都很高，这就是“赚钱难”。 上线的瓶颈主要在硬件和开发成本，现在的有很多人在做平台，来优化资源管理和避免重复开发。 建模主要">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/EpistasisLab/tpot/master/images/tpot-ml-pipeline.png">
   
     <link rel="alternative" href="/atom.xml" title="HaoRen Hao" type="application/atom+xml">
   
@@ -65,11 +67,7 @@
 		<nav class="header-smart-menu">
     		
     			
-    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
-    			
-            
-    			
-    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">标签</a>
     			
             
 		</nav>
@@ -232,7 +230,34 @@
 <p>我通俗的理解是每次学习当做一个样本，结合多个 domain 的样本，来建立(学习)元数据和模型效果的关系。</p>
 <p>主要的实现思路可以分为: recurrent models, metric learning, learning optimizers</p>
 <h1 id="AutoML-在-AI-2B-实践"><a href="#AutoML-在-AI-2B-实践" class="headerlink" title="AutoML 在 AI 2B 实践"></a>AutoML 在 AI 2B 实践</h1><p>AI 2B 大多数应用场景(特别是在 POC 阶段)，机器资源是非常紧张的。AutoML “慢”的问题就成为落地瓶颈了，特别是一些“牛逼”的算法想要用起来很难。反而是一些不起眼的 dirty work 能够带来一些实际帮助，主要是特征工程和超参优化相关的。</p>
-<h2 id="Auto-Feature-Engineering"><a href="#Auto-Feature-Engineering" class="headerlink" title="Auto-Feature-Engineering"></a>Auto-Feature-Engineering</h2><p>我之前做特征工程的方法主要为”经验” + “case”，这里有很多 trick，需要经验积累，但是做多了却发现有一些通用的地方。</p>
+<p>我自己的理解，现在的机器学习流程可以分为 human、template 和 auto 三种方式。把它们结合起来用，能会发挥最大的价值。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>特征</th>
+<th>模型 &amp; 超参</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>auto(tools)</td>
+<td>Featuretools 等</td>
+<td>TPOT、Hyperopt 等</td>
+</tr>
+<tr>
+<td>template</td>
+<td>domain feature 模版</td>
+<td>经典网络结构(e.g. 时序问题用RNN)、传统模型选择(e.g. 连续特征使用GBM)等</td>
+</tr>
+<tr>
+<td>human</td>
+<td>human knowledge</td>
+<td>human knowledge</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Auto-Feature-Engineering"><a href="#Auto-Feature-Engineering" class="headerlink" title="Auto-Feature-Engineering"></a>Auto-Feature-Engineering</h2><p>我之前做特征工程的方法主要为”经验” + “case”，这里有很多 trick。</p>
 <blockquote>
 <p>经验: 主要依赖于领域知识和业界的特征处理经验(e.g. 各种连续值离散化，离散值encode)</p>
 <p>case: 分析模型打分或线上应用的 badcase，再猜想问题，做优化，最后做实验验证。</p>
@@ -269,8 +294,17 @@
 </blockquote>
 <h2 id="超参优化"><a href="#超参优化" class="headerlink" title="超参优化"></a>超参优化</h2><p>超参优化我用的比较多的还是 <a href="http://hyperopt.github.io/hyperopt" target="_blank" rel="noopener">hyperopt</a>，“速度快”(支持 tpe)， “成本低”(接口友好)，</p>
 <p>工具大家应该都比较熟悉，这里就不展开说了，分享一个 trick 和坑吧。</p>
-<p>trick: 一切皆可超参化。举个实际的例子，在销量预测的场景里，label 的数值变换，是否要分组训练等都是一些可以尝试的点，这样同一组模型超参就需要跑很多遍实验才行。在当时的项目中，相对数据量来说算力还是很充足的，所以我们可以很暴力的做一些超参优化，我们就把这些数据预处理也都当做超参，搭建端到端的 pipline，然后使用 hyperopt 来做自动选择。</p>
-<p>坑: overfit-to-dev。超参优化有个常见的坑就是 overfit-to-dev，知道这个概念后解决办法就很多了，最普通的做法是 train-dev-test 划分，但我更喜欢 [train-dev &amp; 自学习 train-test] 的划分，这样能更好的处理数据穿越问题，也能更好的体现自学习效果。</p>
+<p>trick: 一切皆可超参化。举个实际的例子，在销量预测的场景里，label 的数值变换，是否要分组训练等都是一些可以尝试的点，同一组模型超参需要跑很多组实验。在当时的项目中，相对数据量来说算力还是很充足的，所以可以比较暴力的做超参优化，我们可以把数据预处理也当做超参，搭建端到端的 pipline，然后使用 hyperopt 来做自动选择。</p>
+<h1 id="anti-overfitting-to-dev-in-autoML"><a href="#anti-overfitting-to-dev-in-autoML" class="headerlink" title="anti-overfitting(-to-dev) in autoML"></a>anti-overfitting(-to-dev) in autoML</h1><p>大部分 automl 是根据 dev 集上的效果做方案选择，那就会出现 overfitting-to-dev 的问题。</p>
+<p>借鉴经典的 bias variance trade-off 图，我们可以得到如下的 dev 和 test 集 overfitting 图。随着调优次数的增加，dev 集上的(最优)效果是单调变好的，但次数超过一个阈值后 test 集上的效果就出现 overfitting 了。</p>
+<p><img src="https://raw.githubusercontent.com/EpistasisLab/tpot/master/images/tpot-ml-pipeline.png" width="1000" alt="An example machine learning pipeline" align="center"></p>
+<p>anti-overfitting(-to-dev) 的一些解决方法:</p>
+<ol>
+<li>滑窗自学习 bagging: 使用滑窗自学习得到多组 dev 效果，取平均值对模型方案做排序，最后选用 Top 1，Top k bagging方案。</li>
+<li>漏斗模式: 使用第一组 dev 选择 Top N 方案，然后固定这 Top N 方案做一次自学习 (dev2)，根据 dev2 的效果重排模型方案，最后选用 Top 1，Top k bagging方案。</li>
+</ol>
+<p>上述两种方案在流程上有些区别，但本质上都是在降低模型选择中的 variance。</p>
+<p>我个人更倾向于方案 2，使用漏斗模式，在 dev 上表现较差的方案（bias 高），应该是没有出现 overfitting-to-dev 的，而且大概率也不会是最终需要的模型(bias 低 &amp; variance 低)</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
 <li><a href="https://www.ml4aad.org/wp-content/uploads/2018/12/AutoML-Tutorial-NeurIPS2018-HPO_and_NAS.pdf" target="_blank" rel="noopener">NeurIPS 2018: Automatic Machine Learning(AutoML) A Tutorial</a></li>
 <li><a href="https://www.ml4aad.org/wp-content/uploads/2018/12/AutoML-Tutorial-NeurIPS2018-MetaLearning.pdf" target="_blank" rel="noopener">NeurIPS 2018: Learning to Learn</a></li>
@@ -315,11 +349,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">AutoML</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">AI</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">AI</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">AutoML</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
@@ -328,6 +362,14 @@
       		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">落地</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">overfitting</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">anti-overfitting</a>
         		</li>
       		
 		</ul>
@@ -398,8 +440,8 @@
 <nav id="article-nav">
   
   
-    <a href="/2018/07/25/Survivorship bias everywhere/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">无处不在的 Survivorship bias</div>
+    <a href="/2018/12/25/tpot/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">TPOT 调研</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -482,21 +524,13 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
       
       
     
-      
-      
-      
-    
     
 
     <ul style="width: 70%">
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
-      
-        
-      
-      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 100%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">标签</a></li>
       
         
     </ul>
@@ -553,7 +587,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
+                <a href="javascript:void(0)" class="js-tag color2">Machine Learning</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -561,23 +595,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">AutoML</a>
+                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Deep Learning</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">AI</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">2B</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">落地</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Machine Learning</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -597,11 +623,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Deep Learning</a>
+                <a href="javascript:void(0)" class="js-tag color2">AutoML</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">区块链</a>
+                <a href="javascript:void(0)" class="js-tag color3">2B</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">落地</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">overfitting</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">anti-overfitting</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -614,6 +652,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">lightGBM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">区块链</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -641,14 +683,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">W&D</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Deep learning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Online learning</a>
               </li>
              
@@ -662,6 +696,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">adgrad</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">TPOT</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">AutoML pipeline</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">W&D</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Deep learning</a>
               </li>
             
             <div class="clearfix"></div>
@@ -709,12 +759,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
 
     
 
-    
-    	<section class="tools-section tools-section-me" q-show="aboutme">
-  	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">Be a good man</div>
-  	  	
-    	</section>
     
   </div>
   
