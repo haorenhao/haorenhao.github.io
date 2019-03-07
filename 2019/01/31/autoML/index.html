@@ -9,19 +9,19 @@
   <title>AutoML 及落地实践 | HaoRen Hao</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Automatic Machine Learning(AutoML) 是近几年一个很火的 topic。 最近我也在做 AI 2B 的工作，总结现状就是“做项目不难，赚钱难”。 ML 技术应用到传统行业，提升非常明显，这就是“做项目不难”。ML 的应用成本太高了，上线和建模成本都很高，这就是“赚钱难”。 上线的瓶颈主要在硬件和开发成本，现在的有很多人在做平台，来优化资源管理和避免重复开发。 建模主要">
-<meta name="keywords" content="AI,AutoML,2B,落地,overfitting,anti-overfitting">
+<meta name="keywords" content="AutoML,AI,2B,落地,overfitting,anti-overfitting">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AutoML 及落地实践">
 <meta property="og:url" content="http://yoursite.com/2019/01/31/autoML/index.html">
 <meta property="og:site_name" content="HaoRen Hao">
 <meta property="og:description" content="Automatic Machine Learning(AutoML) 是近几年一个很火的 topic。 最近我也在做 AI 2B 的工作，总结现状就是“做项目不难，赚钱难”。 ML 技术应用到传统行业，提升非常明显，这就是“做项目不难”。ML 的应用成本太高了，上线和建模成本都很高，这就是“赚钱难”。 上线的瓶颈主要在硬件和开发成本，现在的有很多人在做平台，来优化资源管理和避免重复开发。 建模主要">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://raw.githubusercontent.com/EpistasisLab/tpot/master/images/tpot-ml-pipeline.png">
-<meta property="og:updated_time" content="2019-03-07T03:00:52.000Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/automl/dev_test.png">
+<meta property="og:updated_time" content="2019-03-07T03:11:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AutoML 及落地实践">
 <meta name="twitter:description" content="Automatic Machine Learning(AutoML) 是近几年一个很火的 topic。 最近我也在做 AI 2B 的工作，总结现状就是“做项目不难，赚钱难”。 ML 技术应用到传统行业，提升非常明显，这就是“做项目不难”。ML 的应用成本太高了，上线和建模成本都很高，这就是“赚钱难”。 上线的瓶颈主要在硬件和开发成本，现在的有很多人在做平台，来优化资源管理和避免重复开发。 建模主要">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/EpistasisLab/tpot/master/images/tpot-ml-pipeline.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/automl/dev_test.png">
   
     <link rel="alternative" href="/atom.xml" title="HaoRen Hao" type="application/atom+xml">
   
@@ -295,11 +295,10 @@
 <h2 id="超参优化"><a href="#超参优化" class="headerlink" title="超参优化"></a>超参优化</h2><p>超参优化我用的比较多的还是 <a href="http://hyperopt.github.io/hyperopt" target="_blank" rel="noopener">hyperopt</a>，“速度快”(支持 tpe)， “成本低”(接口友好)，</p>
 <p>工具大家应该都比较熟悉，这里就不展开说了，分享一个 trick 和坑吧。</p>
 <p>trick: 一切皆可超参化。举个实际的例子，在销量预测的场景里，label 的数值变换，是否要分组训练等都是一些可以尝试的点，同一组模型超参需要跑很多组实验。在当时的项目中，相对数据量来说算力还是很充足的，所以可以比较暴力的做超参优化，我们可以把数据预处理也当做超参，搭建端到端的 pipline，然后使用 hyperopt 来做自动选择。</p>
-<h1 id="anti-overfitting-to-dev-in-autoML"><a href="#anti-overfitting-to-dev-in-autoML" class="headerlink" title="anti-overfitting(-to-dev) in autoML"></a>anti-overfitting(-to-dev) in autoML</h1><p>大部分 automl 是根据 dev 集上的效果做方案选择，那就会出现 overfitting-to-dev 的问题。</p>
-<p>借鉴经典的 bias variance trade-off 图，我们可以得到如下的 dev 和 test 集 overfitting 图。随着调优次数的增加，dev 集上的(最优)效果是单调变好的，但次数超过一个阈值后 test 集上的效果就出现 overfitting 了。</p>
-<p><img src="https://raw.githubusercontent.com/EpistasisLab/tpot/master/images/tpot-ml-pipeline.png" width="1000" alt="An example machine learning pipeline" align="center"></p>
-<p>anti-overfitting(-to-dev) 的一些解决方法:</p>
-<ol>
+<h1 id="anti-overfitting-to-dev-with-autoML"><a href="#anti-overfitting-to-dev-with-autoML" class="headerlink" title="anti-overfitting(-to-dev) with autoML"></a>anti-overfitting(-to-dev) with autoML</h1><p>大部分 automl 是根据 dev 集上的效果做方案选择，那就会出现 overfitting-to-dev 的问题。</p>
+<h2 id="overfitting-to-dev"><a href="#overfitting-to-dev" class="headerlink" title="overfitting-to-dev"></a>overfitting-to-dev</h2><p>借鉴经典的 bias variance trade-off 图，我们可以得到如下的 dev 和 test 集 overfitting 图。随着调优次数的增加，dev 集上的(最优)效果是单调变好的，但次数超过一个阈值后 test 集上的效果就出现 overfitting 了。</p>
+<p><img src="https://raw.githubusercontent.com/haorenhao/_posts/master/automl/dev_test.png" width="500" alt="overfitting-to-dev" align="center"></p>
+<h2 id="anti-overfitting-to-dev"><a href="#anti-overfitting-to-dev" class="headerlink" title="anti-overfitting(-to-dev)"></a>anti-overfitting(-to-dev)</h2><ol>
 <li>滑窗自学习 bagging: 使用滑窗自学习得到多组 dev 效果，取平均值对模型方案做排序，最后选用 Top 1，Top k bagging方案。</li>
 <li>漏斗模式: 使用第一组 dev 选择 Top N 方案，然后固定这 Top N 方案做一次自学习 (dev2)，根据 dev2 的效果重排模型方案，最后选用 Top 1，Top k bagging方案。</li>
 </ol>
@@ -349,11 +348,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">AI</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">AutoML</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">AutoML</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">AI</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
@@ -551,6 +550,30 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Machine Learning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Explore-Exploit</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">E&E</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">MAB</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Online-learning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Click Model</a>
               </li>
              
@@ -571,59 +594,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Explore-Exploit</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">E&E</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">MAB</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Online-learning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Machine Learning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Deep Learning</a>
+                <a href="javascript:void(0)" class="js-tag color2">AutoML</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">AI</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Survivorship bias</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">幸存者偏差</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">模型评估</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">反欺诈</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">AutoML</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -643,39 +618,31 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">GBM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">xgboost</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">lightGBM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">区块链</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">AUC</a>
+                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">离线评估</a>
+                <a href="javascript:void(0)" class="js-tag color4">Deep Learning</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CTR</a>
+                <a href="javascript:void(0)" class="js-tag color3">Survivorship bias</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
+                <a href="javascript:void(0)" class="js-tag color1">幸存者偏差</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">position bias</a>
+                <a href="javascript:void(0)" class="js-tag color5">模型评估</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">反欺诈</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -699,11 +666,35 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">TPOT</a>
+                <a href="javascript:void(0)" class="js-tag color4">AUC</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">AutoML pipeline</a>
+                <a href="javascript:void(0)" class="js-tag color5">离线评估</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CTR</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">position bias</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">GBM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">xgboost</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">lightGBM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -712,6 +703,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Deep learning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">TPOT</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">AutoML pipeline</a>
               </li>
             
             <div class="clearfix"></div>
