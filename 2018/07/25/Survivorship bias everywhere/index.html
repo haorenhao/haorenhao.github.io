@@ -17,7 +17,7 @@
 <meta property="og:description" content="Survivorship bias 是机器学习里常见但又容易被忽略的坑。 在学术研究时，我们都假设训练集和测试集是独立同分布的。在工业应用时，我们会拿离线日志数据做调研，在模型定版后，将离线数据做训练集去训练一个模型，然后部署上线，线上的请求就是我们的测试集。 但线上请求的分布跟我们离线日志数据往往是不满足独立同分布的，这就会引起 Survivorship bias，常见的影响和场景如下。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/haorenhao/_posts/master/Survivorship%20bias%20everywhere/2.png">
-<meta property="og:updated_time" content="2018-07-27T07:46:13.000Z">
+<meta property="og:updated_time" content="2019-03-28T07:08:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="无处不在的 Survivorship bias">
 <meta name="twitter:description" content="Survivorship bias 是机器学习里常见但又容易被忽略的坑。 在学术研究时，我们都假设训练集和测试集是独立同分布的。在工业应用时，我们会拿离线日志数据做调研，在模型定版后，将离线数据做训练集去训练一个模型，然后部署上线，线上的请求就是我们的测试集。 但线上请求的分布跟我们离线日志数据往往是不满足独立同分布的，这就会引起 Survivorship bias，常见的影响和场景如下。">
@@ -169,7 +169,7 @@
 <p>这个问题靠单个 model 优化很难解，需要配合 policy 一起来做，E&amp;E 就是一个不错的选择，详见 <a href="https://haorenhao.github.io/2016/11/12/EE-vs-LR/" target="_blank" rel="noopener">「Explore-Exploit怎么做」</a>。</p>
 <h2 id="猫鼠游戏"><a href="#猫鼠游戏" class="headerlink" title="猫鼠游戏"></a>猫鼠游戏</h2><p>在反欺诈里，一部分场景为事中拦截，即模型识别出来为欺诈行为后直接中止后续流程。</p>
 <p>这种场景，需要特别小心，Survivorship bias 很隐秘，但是影响挺大的，debug 周期较长。我们拿申请反欺诈场景为例展开看一下，下面是一个简化版的流程图。</p>
-<p><img src="https://raw.githubusercontent.com/haorenhao/_posts/master/Survivorship%20bias%20everywhere/2.png" width="350" alt="申请反欺诈流程图" align="center"></p>
+<p><img src="https://raw.githubusercontent.com/haorenhao/_posts/master/Survivorship%20bias%20everywhere/2.png" width="500" alt="申请反欺诈流程图" align="center"></p>
 <p>在离线数据中，我们有 A、B、C 三类申请数据（由于 C 类用户没有真实放贷，所以无法区分 C1 和 C2），由于 C 类数据是没有标注的，所以拿 A、B 来构建样本，假设学出来的模型非常牛逼，可以把 A 都拦下来同时把 B 都放过，但是上线后会发生什么呢？</p>
 <p>A 类欺诈确实都被拦截了，但由于离线训练数据里没有没有 C1 类的样本数据，所以模型更新后，又出现了 C1 类欺诈。更近一步看，因为被拦截，所以后面产生的数据里不会有 A 类欺诈了，再次更新模型后，又无法拦截 A 了。欺诈模式就这样在 A 和 C1 中来回切换，每次模型离线效果都非常牛逼，但业务的欺诈率并不一定减少。</p>
 <p>怎么才能逃离这种困境呢，我想到的解法以下几个，但都有缺点，大家有其它想法可以反馈给我，谢谢～</p>
@@ -301,11 +301,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/12/25/tpot/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/01/31/autoML/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          TPOT 调研
+          AutoML 及落地实践
         
       </div>
     </a>
@@ -442,6 +442,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Machine Learning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Explore-Exploit</a>
               </li>
              
@@ -458,19 +470,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">AutoML</a>
+                <a href="javascript:void(0)" class="js-tag color4">Deep Learning</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">AI</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">AutoML</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -503,14 +511,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">反欺诈</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Machine Learning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Deep Learning</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -554,6 +554,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">W&D</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Deep learning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Online learning</a>
               </li>
              
@@ -567,22 +575,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">adgrad</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">TPOT</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">AutoML pipeline</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">W&D</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Deep learning</a>
               </li>
             
             <div class="clearfix"></div>
