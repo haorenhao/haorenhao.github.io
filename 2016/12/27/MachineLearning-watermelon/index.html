@@ -68,6 +68,10 @@
     			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">标签</a>
     			
             
+    			
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+            
 		</nav>
 		<nav class="header-nav">
 			<div class="social">
@@ -219,32 +223,6 @@
       
 
       
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>打 call 不如打钱 :)<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="https://raw.githubusercontent.com/haorenhao/_posts/master/imgs/Reward_Wechat.png">
-                      <span class="reward-type">微信</span>
-                    </div>
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
     </div>
     <div class="article-info article-info-index">
       
@@ -359,6 +337,19 @@
         </div>
         
         
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#自助法"><span class="toc-number">1.</span> <span class="toc-text">自助法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#调参与最终模型"><span class="toc-number">2.</span> <span class="toc-text">调参与最终模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#偏差与反差"><span class="toc-number">3.</span> <span class="toc-text">偏差与反差</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#过采样-amp-欠采样"><span class="toc-number">4.</span> <span class="toc-text">过采样&amp;欠采样</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#决策树-划分选择"><span class="toc-number">5.</span> <span class="toc-text">决策树 划分选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pruning"><span class="toc-number">6.</span> <span class="toc-text">pruning</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#缺失值"><span class="toc-number">7.</span> <span class="toc-text">缺失值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Backpropagation"><span class="toc-number">8.</span> <span class="toc-text">Backpropagation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#“跳出”局部极小"><span class="toc-number">9.</span> <span class="toc-text">“跳出”局部极小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#深度学习"><span class="toc-number">10.</span> <span class="toc-text">深度学习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特征选择"><span class="toc-number">11.</span> <span class="toc-text">特征选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#稀疏表示-字典学习"><span class="toc-number">12.</span> <span class="toc-text">稀疏表示/字典学习</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
     </div>
 </aside>
 
@@ -403,7 +394,7 @@
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,
-		showTags: false
+		showTags: true
 	}
 </script>
 
@@ -422,13 +413,21 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
       
       
     
+      
+      
+      
+    
     
 
     <ul style="width: 70%">
     
     
       
-      <li style="width: 100%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">标签</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">标签</a></li>
+      
+        
+      
+      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
       
         
     </ul>
@@ -493,35 +492,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">AutoML</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">AI</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">2B</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">落地</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">overfitting</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">anti-overfitting</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Machine Learning Yearning</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Deep Learning</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">AI</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -538,6 +517,26 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">反欺诈</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">AutoML</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">2B</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">落地</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">overfitting</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">anti-overfitting</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -645,6 +644,12 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
 
     
 
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Work smarter</div>
+  	  	
+    	</section>
     
   </div>
   
